@@ -29,6 +29,7 @@ func Gorm(_ context.Context) error {
 		&model.ArticleCommentDiscussion{},
 		&model.Collect{},
 		&model.SysDict{},
+		&model.MCPToken{},
 	); err != nil {
 		return err
 	}

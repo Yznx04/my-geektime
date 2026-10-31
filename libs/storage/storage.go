@@ -15,7 +15,7 @@ type Storage interface {
 	Stat(string) (os.FileInfo, error)
 	Delete(string) error
 	GetKey(key string, isReal bool) string
-	GetUrl(key string) string
+	GetUrl(key string, host string) string
 }
 
 var _ Storage = (*LocalStorage)(nil)
@@ -134,11 +134,14 @@ func (ls *LocalStorage) GetKey(key string, isReal bool) string {
 	return fmt.Sprintf("%s%s/%s", ls.prefix, ls.bucket, key)
 }
 
-func (ls *LocalStorage) GetUrl(key string) string {
+func (ls *LocalStorage) GetUrl(key string, host string) string {
+	if host == "" {
+		host = ls.host
+	}
 	if strings.HasPrefix(key, ls.prefix) {
-		return fmt.Sprintf("%s/%s", ls.host, strings.TrimPrefix(key, ls.prefix))
+		return fmt.Sprintf("%s/%s", host, strings.TrimPrefix(key, ls.prefix))
 	}
 	key = strings.TrimPrefix(key, ls.directory)
 	key = strings.TrimPrefix(key, "/")
-	return fmt.Sprintf("%s/%s/%s", ls.host, ls.bucket, key)
+	return fmt.Sprintf("%s/%s/%s", host, ls.bucket, key)
 }

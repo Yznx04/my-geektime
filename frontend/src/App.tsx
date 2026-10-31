@@ -20,6 +20,7 @@ const CaseList = lazy(() => import('@/pages/CaseList').then(m => ({ default: m.C
 const Setting = lazy(() => import('@/pages/Setting').then(m => ({ default: m.Setting })))
 const UserList = lazy(() => import('@/pages/UserList').then(m => ({ default: m.UserList })))
 const DictList = lazy(() => import('@/pages/DictList').then(m => ({ default: m.DictList })))
+const McpToken = lazy(() => import('@/pages/McpToken').then(m => ({ default: m.McpToken })))
 
 const LoadingFallback = () => (
   <div className="flex items-center justify-center h-full">
@@ -94,6 +95,11 @@ const App: React.FC = () => {
           <Route path="sys/dict/list" element={
             <Suspense fallback={<LoadingFallback />}>
               <DictList />
+            </Suspense>
+          } />
+          <Route path="mcp/token" element={
+            <Suspense fallback={<LoadingFallback />}>
+              <McpToken />
             </Suspense>
           } />
         </Route>

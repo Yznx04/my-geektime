@@ -8,6 +8,7 @@ import {
   ChevronDown,
   User,
   LogOut,
+  KeyRound,
 } from 'lucide-react'
 import { useAuthStore } from '@/store/auth'
 
@@ -33,6 +34,13 @@ const menuItems: MenuItem[] = [
      children: [
        { label: '收藏列表', url: '/collect/list' },
      ],
+  },
+  {
+    label: 'MCP 服务',
+    icon: <KeyRound size={18} />,
+    children: [
+      { label: 'Token 管理', url: '/mcp/token' },
+    ],
   },
   {
     label: '极客课程',

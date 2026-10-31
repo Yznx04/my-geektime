@@ -59,7 +59,7 @@ func doWithToken(c *gin.Context, token *jwt.Token) error {
 	return nil
 }
 
-func ParseToken(j *rest.JWTConfig, c *gin.Context) (*jwt.Token, error) {
+func TokenFromRequest(j *rest.JWTConfig, c *gin.Context) (string, error) {
 	var token string
 	var err error
 
@@ -82,6 +82,17 @@ func ParseToken(j *rest.JWTConfig, c *gin.Context) (*jwt.Token, error) {
 		}
 	}
 
+	if err != nil {
+		return "", err
+	}
+	if token == "" {
+		return "", errors.New("token is empty")
+	}
+	return token, nil
+}
+
+func ParseToken(j *rest.JWTConfig, c *gin.Context) (*jwt.Token, error) {
+	token, err := TokenFromRequest(j, c)
 	if err != nil {
 		return nil, err
 	}

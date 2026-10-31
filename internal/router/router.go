@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zkep/my-geektime/internal/config"
 	"github.com/zkep/my-geektime/internal/global"
+	mcpapi "github.com/zkep/my-geektime/internal/mcp"
 	mw "github.com/zkep/my-geektime/internal/middleware"
 )
 
@@ -41,6 +42,8 @@ func NewRouter(assets embed.FS) (*gin.Engine, error) {
 		e.StaticFS(path.Join("/", global.CONF.Storage.Bucket),
 			gin.Dir(global.CONF.Storage.Directory, true))
 	}
+
+	e.Any("/mcp", mw.MCPAuth(), gin.WrapH(mcpapi.NewHTTPHandler()))
 
 	public := e.Group("v2", mw.Timeout())
 	private := e.Group("v2", mw.JWTMiddleware(), mw.Timeout())

@@ -7,6 +7,7 @@ import {
   Hammer,
   ChevronDown,
   ChevronRight,
+  KeyRound,
   X,
 } from 'lucide-react'
 import { useAuthStore } from '@/store/auth'
@@ -32,6 +33,13 @@ const menuItems: MenuItem[] = [
     icon: <BookOpen size={18} />,
     children: [
       { label: '收藏列表', url: '/collect/list' },
+    ],
+  },
+  {
+    label: 'MCP 服务',
+    icon: <KeyRound size={18} />,
+    children: [
+      { label: 'Token 管理', url: '/mcp/token' },
     ],
   },
   {

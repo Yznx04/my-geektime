@@ -178,11 +178,11 @@ func (t *Collect) List(c *gin.Context) {
 				if len(x.Message) > 0 {
 					_ = json.Unmarshal(x.Message, &taskMessage)
 					if len(taskMessage.Object) > 0 {
-						taskRow.Dir = global.Storage.GetUrl(taskMessage.Object)
+						taskRow.Dir = global.Storage.GetUrl(taskMessage.Object, RequestBaseURL(c))
 						taskRow.Dir = fmt.Sprintf("%s/", taskRow.Dir)
 					}
 					if len(taskMessage.Doc) > 0 {
-						taskRow.Doc = global.Storage.GetUrl(taskMessage.Doc)
+						taskRow.Doc = global.Storage.GetUrl(taskMessage.Doc, RequestBaseURL(c))
 					}
 				}
 				taskRow.Redirect = sys_dict.ProductURLWithType(product.Type, product.ID)
@@ -199,7 +199,7 @@ func (t *Collect) List(c *gin.Context) {
 				if len(x.Message) > 0 {
 					_ = json.Unmarshal(x.Message, &taskMessage)
 					if len(taskMessage.Object) > 0 {
-						taskRow.Object = global.Storage.GetUrl(taskMessage.Object)
+						taskRow.Object = global.Storage.GetUrl(taskMessage.Object, RequestBaseURL(c))
 					}
 				}
 				taskRow.Redirect = sys_dict.ProductDetailURLWithType(

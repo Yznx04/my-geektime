@@ -131,11 +131,11 @@ func (t *Task) List(c *gin.Context) {
 			if len(l.Message) > 0 {
 				_ = json.Unmarshal(l.Message, &taskMessage)
 				if len(taskMessage.Object) > 0 {
-					row.Dir = global.Storage.GetUrl(taskMessage.Object)
+					row.Dir = global.Storage.GetUrl(taskMessage.Object, RequestBaseURL(c))
 					row.Dir = fmt.Sprintf("%s/", row.Dir)
 				}
 				if len(taskMessage.Doc) > 0 {
-					row.Doc = global.Storage.GetUrl(taskMessage.Doc)
+					row.Doc = global.Storage.GetUrl(taskMessage.Doc, RequestBaseURL(c))
 				}
 			}
 			row.Redirect = sys_dict.ProductURLWithType(product.Type, product.ID)
@@ -152,7 +152,7 @@ func (t *Task) List(c *gin.Context) {
 			if len(l.Message) > 0 {
 				_ = json.Unmarshal(l.Message, &taskMessage)
 				if len(taskMessage.Object) > 0 {
-					row.Object = global.Storage.GetUrl(taskMessage.Object)
+					row.Object = global.Storage.GetUrl(taskMessage.Object, RequestBaseURL(c))
 				}
 			}
 			row.Redirect = sys_dict.ProductDetailURLWithType(
@@ -193,7 +193,7 @@ func (t *Task) Info(c *gin.Context) {
 	if len(l.Message) > 0 {
 		_ = json.Unmarshal(l.Message, &taskMessage)
 		if len(taskMessage.Object) > 0 {
-			taskMessage.Object = global.Storage.GetUrl(taskMessage.Object)
+			taskMessage.Object = global.Storage.GetUrl(taskMessage.Object, RequestBaseURL(c))
 		}
 	}
 
@@ -684,7 +684,7 @@ func (t *Task) Export(c *gin.Context) {
 			global.FAIL(c, "fail.msg", err.Error())
 			return
 		}
-		docFullURL := global.Storage.GetUrl(docURL)
+		docFullURL := global.Storage.GetUrl(docURL, RequestBaseURL(c))
 		global.OK(c, gin.H{"doc": docFullURL})
 	}
 }

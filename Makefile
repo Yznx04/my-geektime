@@ -3,7 +3,7 @@ PROJECT:=my-geektime
 .PHONY: build web githook run website image all
 
 
-all: build
+all: web build
 
 build:
 	go vet ./
