@@ -7,7 +7,6 @@ import {
   Hammer,
   ChevronDown,
   ChevronRight,
-  KeyRound,
   X,
 } from 'lucide-react'
 import { useAuthStore } from '@/store/auth'
@@ -36,13 +35,6 @@ const menuItems: MenuItem[] = [
     ],
   },
   {
-    label: 'MCP 服务',
-    icon: <KeyRound size={18} />,
-    children: [
-      { label: 'Token 管理', url: '/mcp/token' },
-    ],
-  },
-  {
     label: '极客课程',
     icon: <Monitor size={18} />,
     visibleOn: (roleId) => roleId === 1,
@@ -55,10 +47,10 @@ const menuItems: MenuItem[] = [
   {
     label: '系统设置',
     icon: <Hammer size={18} />,
-    visibleOn: (roleId) => roleId === 1,
     children: [
-      { label: '系统配置', url: '/setting' },
-      { label: '用户管理', url: '/user/list' },
+      { label: '系统配置', url: '/setting', visibleOn: (roleId) => roleId === 1 },
+      { label: '用户管理', url: '/user/list', visibleOn: (roleId) => roleId === 1 },
+      { label: 'MCP Token 管理', url: '/mcp/token' },
     ],
   },
 ]
@@ -189,7 +181,7 @@ export const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, openMenus, onTo
                   </button>
                   {openMenus.has(item.label) && (
                     <div className="ml-5 mt-1">
-                      {item.children.map((child) => (
+                      {item.children.filter(isVisible).map((child) => (
                         <NavLink
                           key={child.url}
                           to={child.url!}

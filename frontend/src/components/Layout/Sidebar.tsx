@@ -8,7 +8,6 @@ import {
   ChevronDown,
   User,
   LogOut,
-  KeyRound,
 } from 'lucide-react'
 import { useAuthStore } from '@/store/auth'
 
@@ -36,13 +35,6 @@ const menuItems: MenuItem[] = [
      ],
   },
   {
-    label: 'MCP 服务',
-    icon: <KeyRound size={18} />,
-    children: [
-      { label: 'Token 管理', url: '/mcp/token' },
-    ],
-  },
-  {
     label: '极客课程',
     icon: <Monitor size={18} />,
     visibleOn: (roleId) => roleId === 1,
@@ -55,10 +47,10 @@ const menuItems: MenuItem[] = [
   {
     label: '系统设置',
     icon: <Hammer size={18} />,
-    visibleOn: (roleId) => roleId === 1,
     children: [
-      { label: '系统配置', url: '/setting' },
-      { label: '用户管理', url: '/user/list' },
+      { label: '系统配置', url: '/setting', visibleOn: (roleId) => roleId === 1 },
+      { label: '用户管理', url: '/user/list', visibleOn: (roleId) => roleId === 1 },
+      { label: 'MCP Token 管理', url: '/mcp/token' },
     ],
   },
 ]
@@ -121,7 +113,7 @@ export const Sidebar: React.FC = () => {
             {item.children && activeDropdown === item.label && (
               <div className="absolute top-full left-0 w-48 bg-white/95 backdrop-blur-xl rounded-xl shadow-xl border border-white/20 py-2 z-50" style={{ marginTop: '4px' }}>
                 <div className="absolute -top-4 left-0 w-full h-4" />
-                {item.children.map((child) => (
+                {item.children.filter(isVisible).map((child) => (
                   <NavLink
                     key={child.url}
                     to={child.url!}

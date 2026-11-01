@@ -12,6 +12,32 @@ import {
 const formatTime = (value: number) =>
   value > 0 ? new Date(value * 1000).toLocaleString('zh-CN') : '-'
 
+// navigator.clipboard 仅在安全上下文（HTTPS / localhost）可用，局域网 HTTP 访问时回退到 execCommand
+const copyToClipboard = async (text: string) => {
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text)
+      return
+    } catch {
+      // 权限被拒绝时继续走回退方案
+    }
+  }
+  const textarea = document.createElement('textarea')
+  textarea.value = text
+  textarea.setAttribute('readonly', '')
+  textarea.style.position = 'fixed'
+  textarea.style.top = '-1000px'
+  textarea.style.opacity = '0'
+  document.body.appendChild(textarea)
+  textarea.select()
+  textarea.setSelectionRange(0, text.length)
+  const copied = document.execCommand('copy')
+  document.body.removeChild(textarea)
+  if (!copied) {
+    throw new Error('copy failed')
+  }
+}
+
 export const McpToken: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [items, setItems] = useState<MCPTokenItem[]>([])
@@ -77,7 +103,7 @@ export const McpToken: React.FC = () => {
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(newToken)
+      await copyToClipboard(newToken)
       addToast('已复制到剪贴板', 'success')
     } catch {
       addToast('复制失败，请手动选择复制', 'error')
